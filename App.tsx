@@ -1,14 +1,17 @@
 
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import CarRegisterScreen from './src/screens/CarRegisterScreen';
+import AppNavigator from './src/navigation/AppNavigator';
+import { CarProvider } from './src/services/CarContext';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <CarRegisterScreen />
-      <StatusBar style="auto" />
-    </View>
+    <CarProvider>
+      <View style={styles.container}>
+        <AppNavigator />
+        <StatusBar style="auto" />
+      </View>
+    </CarProvider>
   );
 }
 
