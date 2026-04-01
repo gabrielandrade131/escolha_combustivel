@@ -17,9 +17,7 @@ const CarRegisterScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16 }}>
-        Cadastro de Carros
-      </Text>
+      {/* Título removido, pois já está no header da navegação */}
       <CarForm onSubmit={handleAddCar} />
       <Button
         title="Ir para escolha de combustível"
