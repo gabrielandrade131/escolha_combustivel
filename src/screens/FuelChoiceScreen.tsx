@@ -1,19 +1,22 @@
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { useCarContext } from '../services/CarContext';
 
-const mockCars = [
-  { name: 'Gol 1.0', consumption: '10' },
-  { name: 'Uno 1.4', consumption: '12' },
-];
 
 const FuelChoiceScreen: React.FC = () => {
+  const { cars } = useCarContext();
   const [selectedCarIdx, setSelectedCarIdx] = useState(0);
   const [ethanolPrice, setEthanolPrice] = useState('');
   const [gasolinePrice, setGasolinePrice] = useState('');
   const [result, setResult] = useState('');
 
   const handleCalculate = () => {
-    const car = mockCars[selectedCarIdx];
+    if (cars.length === 0) {
+      Alert.alert('Erro', 'Cadastre um carro primeiro.');
+      return;
+    }
+    const car = cars[selectedCarIdx];
     const consumption = parseFloat(car.consumption);
     const ethanol = parseFloat(ethanolPrice.replace(',', '.'));
     const gasoline = parseFloat(gasolinePrice.replace(',', '.'));
@@ -34,14 +37,18 @@ const FuelChoiceScreen: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Escolha de Combustível</Text>
       <Text style={styles.label}>Selecione o carro:</Text>
-      {mockCars.map((car, idx) => (
-        <Button
-          key={car.name}
-          title={car.name}
-          color={selectedCarIdx === idx ? '#007bff' : '#ccc'}
-          onPress={() => setSelectedCarIdx(idx)}
-        />
-      ))}
+      {cars.length === 0 ? (
+        <Text style={{ color: 'red' }}>Nenhum carro cadastrado.</Text>
+      ) : (
+        cars.map((car, idx) => (
+          <Button
+            key={car.name + idx}
+            title={car.name}
+            color={selectedCarIdx === idx ? '#007bff' : '#ccc'}
+            onPress={() => setSelectedCarIdx(idx)}
+          />
+        ))
+      )}
       <Text style={styles.label}>Preço do Etanol (R$)</Text>
       <TextInput
         style={styles.input}
@@ -58,7 +65,7 @@ const FuelChoiceScreen: React.FC = () => {
         placeholder="Ex: 5.99"
         keyboardType="numeric"
       />
-      <Button title="Calcular" onPress={handleCalculate} />
+      <Button title="Calcular" onPress={handleCalculate} disabled={cars.length === 0} />
       {result ? (
         <Text style={styles.result}>{result}</Text>
       ) : null}
