@@ -26,16 +26,18 @@ const CarForm: React.FC<CarFormProps> = ({ onSubmit }) => {
         placeholder="Ex: 10"
         keyboardType="numeric"
       />
-      <Button
-        title="Cadastrar"
-        onPress={() => {
-          if (name && consumption) {
-            onSubmit({ name, consumption });
-            setName('');
-            setConsumption('');
-          }
-        }}
-      />
+      <View style={styles.buttonWrapper}>
+        <Button
+          title="Cadastrar"
+          onPress={() => {
+            if (name && consumption) {
+              onSubmit({ name, consumption });
+              setName('');
+              setConsumption('');
+            }
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -43,6 +45,10 @@ const CarForm: React.FC<CarFormProps> = ({ onSubmit }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+  },
+  buttonWrapper: {
+    width: '100%',
+    marginTop: 8,
   },
   label: {
     fontWeight: 'bold',
