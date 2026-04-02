@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { useCarContext } from '../services/CarContext';
 
 
@@ -40,15 +40,43 @@ const FuelChoiceScreen: React.FC = () => {
       {cars.length === 0 ? (
         <Text style={{ color: 'red' }}>Nenhum carro cadastrado.</Text>
       ) : (
-        cars.map((car, idx) => (
-          <Button
-            key={car.name + idx}
-            title={car.name}
-            color={selectedCarIdx === idx ? '#007bff' : '#ccc'}
-            onPress={() => setSelectedCarIdx(idx)}
-          />
-        ))
+        <View style={styles.carList}>
+          {cars.map((car, idx) => (
+            <TouchableOpacity
+              key={car.name + idx}
+              style={[styles.carButton, selectedCarIdx === idx && styles.carButtonSelected]}
+              onPress={() => setSelectedCarIdx(idx)}
+              activeOpacity={0.8}
+            >
+              <Text style={[styles.carButtonText, selectedCarIdx === idx && styles.carButtonTextSelected]}>{car.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       )}
+        carList: {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 8,
+          marginBottom: 8,
+        },
+        carButton: {
+          paddingVertical: 10,
+          paddingHorizontal: 16,
+          borderRadius: 4,
+          backgroundColor: '#eee',
+          marginRight: 8,
+          marginTop: 8,
+        },
+        carButtonSelected: {
+          backgroundColor: '#007bff',
+        },
+        carButtonText: {
+          color: '#333',
+          fontWeight: 'bold',
+        },
+        carButtonTextSelected: {
+          color: '#fff',
+        },
       <Text style={styles.label}>Preço do Etanol (R$)</Text>
       <TextInput
         style={styles.input}
