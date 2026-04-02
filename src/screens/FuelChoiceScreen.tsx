@@ -56,7 +56,6 @@ const FuelChoiceScreen: React.FC = () => {
         carList: {
           flexDirection: 'row',
           flexWrap: 'wrap',
-          gap: 8,
           marginBottom: 8,
         },
         carButton: {
