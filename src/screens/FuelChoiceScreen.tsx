@@ -53,29 +53,6 @@ const FuelChoiceScreen: React.FC = () => {
           ))}
         </View>
       )}
-        carList: {
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          marginBottom: 8,
-        },
-        carButton: {
-          paddingVertical: 10,
-          paddingHorizontal: 16,
-          borderRadius: 4,
-          backgroundColor: '#eee',
-          marginRight: 8,
-          marginTop: 8,
-        },
-        carButtonSelected: {
-          backgroundColor: '#007bff',
-        },
-        carButtonText: {
-          color: '#333',
-          fontWeight: 'bold',
-        },
-        carButtonTextSelected: {
-          color: '#fff',
-        },
       <Text style={styles.label}>Preço do Etanol (R$)</Text>
       <TextInput
         style={styles.input}
@@ -105,6 +82,29 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#fff',
+  },
+  carList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 8,
+  },
+  carButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    backgroundColor: '#eee',
+    marginRight: 8,
+    marginTop: 8,
+  },
+  carButtonSelected: {
+    backgroundColor: '#007bff',
+  },
+  carButtonText: {
+    color: '#333',
+    fontWeight: 'bold',
+  },
+  carButtonTextSelected: {
+    color: '#fff',
   },
   title: {
     fontSize: 20,
