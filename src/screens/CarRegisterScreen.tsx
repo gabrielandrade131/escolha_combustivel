@@ -10,7 +10,13 @@ type Props = NativeStackScreenProps<RootStackParamList, 'CarRegister'>;
 const CarRegisterScreen: React.FC<Props> = ({ navigation }) => {
   const { cars, addCar } = useCarContext();
 
-  const handleAddCar = (car: { name: string; consumption: string }) => {
+  const handleAddCar = (car: {
+    name: string;
+    ethanolCity: string;
+    gasolineCity: string;
+    ethanolHighway: string;
+    gasolineHighway: string;
+  }) => {
     addCar(car);
     Alert.alert('Sucesso', 'Carro cadastrado!');
   };
@@ -32,9 +38,15 @@ const CarRegisterScreen: React.FC<Props> = ({ navigation }) => {
         data={cars}
         keyExtractor={(_, idx) => idx.toString()}
         renderItem={({ item }) => (
-          <Text>
-            {item.name} - {item.consumption} km/l
-          </Text>
+          <View style={{ marginBottom: 8 }}>
+            <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
+            <Text style={{ fontSize: 12 }}>
+              Cidade: Etanol {item.ethanolCity} km/l | Gasolina {item.gasolineCity} km/l
+            </Text>
+            <Text style={{ fontSize: 12 }}>
+              Rodovia: Etanol {item.ethanolHighway} km/l | Gasolina {item.gasolineHighway} km/l
+            </Text>
+          </View>
         )}
       />
     </View>

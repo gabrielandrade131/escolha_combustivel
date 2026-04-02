@@ -4,12 +4,14 @@ import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } fr
 import { useCarContext } from '../services/CarContext';
 
 
+
 const FuelChoiceScreen: React.FC = () => {
   const { cars } = useCarContext();
   const [selectedCarIdx, setSelectedCarIdx] = useState(0);
   const [ethanolPrice, setEthanolPrice] = useState('');
   const [gasolinePrice, setGasolinePrice] = useState('');
   const [result, setResult] = useState('');
+  const [routeType, setRouteType] = useState<'cidade' | 'rodovia'>('cidade');
 
   const handleCalculate = () => {
     if (cars.length === 0) {
@@ -17,16 +19,30 @@ const FuelChoiceScreen: React.FC = () => {
       return;
     }
     const car = cars[selectedCarIdx];
-    const consumption = parseFloat(car.consumption);
     const ethanol = parseFloat(ethanolPrice.replace(',', '.'));
     const gasoline = parseFloat(gasolinePrice.replace(',', '.'));
-    if (isNaN(consumption) || isNaN(ethanol) || isNaN(gasoline)) {
+    let ethanolConsumption = 0;
+    let gasolineConsumption = 0;
+    if (routeType === 'cidade') {
+      ethanolConsumption = parseFloat(car.ethanolCity);
+      gasolineConsumption = parseFloat(car.gasolineCity);
+    } else {
+      ethanolConsumption = parseFloat(car.ethanolHighway);
+      gasolineConsumption = parseFloat(car.gasolineHighway);
+    }
+    if (
+      isNaN(ethanolConsumption) ||
+      isNaN(gasolineConsumption) ||
+      isNaN(ethanol) ||
+      isNaN(gasoline)
+    ) {
       Alert.alert('Erro', 'Preencha todos os campos corretamente.');
       return;
     }
-    // Fórmula: (etanol/gasolina) < 0.7 => etanol compensa
-    const ratio = ethanol / gasoline;
-    if (ratio < 0.7) {
+    // Cálculo do custo por km
+    const costEthanol = ethanol / ethanolConsumption;
+    const costGasoline = gasoline / gasolineConsumption;
+    if (costEthanol < costGasoline) {
       setResult('Abasteça com Etanol');
     } else {
       setResult('Abasteça com Gasolina');
@@ -53,7 +69,40 @@ const FuelChoiceScreen: React.FC = () => {
           ))}
         </View>
       )}
+      <Text style={styles.label}>Tipo de trajeto:</Text>
+      <View style={{ flexDirection: 'row', marginBottom: 8 }}>
+        <TouchableOpacity
+          style={[styles.routeButton, routeType === 'cidade' && styles.routeButtonSelected]}
+          onPress={() => setRouteType('cidade')}
+        >
+          <Text style={[styles.routeButtonText, routeType === 'cidade' && styles.routeButtonTextSelected]}>Cidade</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.routeButton, routeType === 'rodovia' && styles.routeButtonSelected]}
+          onPress={() => setRouteType('rodovia')}
+        >
+          <Text style={[styles.routeButtonText, routeType === 'rodovia' && styles.routeButtonTextSelected]}>Rodovia</Text>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.label}>Preço do Etanol (R$)</Text>
+        routeButton: {
+          flex: 1,
+          paddingVertical: 10,
+          borderRadius: 4,
+          backgroundColor: '#eee',
+          alignItems: 'center',
+          marginRight: 8,
+        },
+        routeButtonSelected: {
+          backgroundColor: '#007bff',
+        },
+        routeButtonText: {
+          color: '#333',
+          fontWeight: 'bold',
+        },
+        routeButtonTextSelected: {
+          color: '#fff',
+        },
       <TextInput
         style={styles.input}
         value={ethanolPrice}

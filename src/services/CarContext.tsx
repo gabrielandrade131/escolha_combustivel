@@ -2,7 +2,10 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface Car {
   name: string;
-  consumption: string;
+  ethanolCity: string;
+  gasolineCity: string;
+  ethanolHighway: string;
+  gasolineHighway: string;
 }
 
 interface CarContextData {
